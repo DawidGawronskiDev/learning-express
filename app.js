@@ -25,17 +25,17 @@ app.get("/", function (req, res, next) {
   next()
 });
 
-app.get("/user/:id", (req, res, next) => {
-    if (req.params.id === "0") {
-        console.log("There is no user id")
-    }
+app.use((req, res, next) => {
+    console.log("Hi!")
+    res.status(404).send("File that you're looking for might be absent")
     next()
 })
 
-app.use((req, res, next) => {
-    console.log("Testing!")
-    next()
-})
+// Remaining errors handler
+app.use(function (err, req, res, next) {
+    console.error(err.stack);
+    res.status(500).send("Something broke!");
+  });
 
 app.listen(port, function () {
   console.log(`Example app listening on port ${port}!`);
